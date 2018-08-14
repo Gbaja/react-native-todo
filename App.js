@@ -6,16 +6,24 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       todoInput: "",
-      toDos: ["Sleep", "Eat"]
+      toDos: [{id: 929829, item: "sleep"}, {id: 920, item: "eat"}]
     }
   }
+
   addTodo(item){
     console.log("ITEM: ", item)
-    // const addToDoToArray = this.state.toDos.concat(item)
-    this.setState({toDos: [...this.state.toDos, item]})
-    console.log(this.state.toDos)
-  
+    const id = Math.floor((Math.random() * 2340) - 23)
+    const newToDo = {
+        id: id,
+        item: item
+    }
+    this.setState({toDos: [...this.state.toDos, newToDo]})
   }
+
+  deleteToDo = (item) =>{
+    console.log(item.id)
+  }
+
   render() {
     console.log("TODO'S ",this.state.toDos)
     return (
@@ -31,8 +39,15 @@ export default class App extends React.Component {
           title="Add to do"/>
           <FlatList
             data={this.state.toDos}
-            renderItem={({item}) => <Text>{item}</Text>}
-            />
+            renderItem={({item}) => (
+              <View style={{ width: 100, marginTop: 10, flexDirection: 'row', flexWrap: 'wrap'}}>
+                <Button title="X" onPress={()=>this.deleteToDo(item)}/>
+                <Text>{item.item}</Text>
+              </View>
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+            
       </View>
     );
   }
@@ -41,7 +56,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     marginTop: 30,
-    flex: 1,
     backgroundColor: '#fff',
   },
 });
