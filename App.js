@@ -22,6 +22,13 @@ export default class App extends React.Component {
 
   deleteToDo = (item) =>{
     console.log(item.id)
+    const removeToDo = this.state.toDos.filter(toDo=> {
+      console.log(item)
+      return toDo.id !== item.id
+    });
+    console.log(removeToDo)
+    this.setState({toDos: removeToDo})
+    
   }
 
   render() {
