@@ -66,7 +66,7 @@ export default class App extends React.Component {
                   onValueChange={()=> this.completedToDo(item)}
                 />
                 <Button title="X" onPress={()=>this.deleteToDo(item)}/>
-                <Text>{item.item}</Text>
+                <Text style={item.completed && styles.completed}>{item.item}</Text>
               </View>
             )}
             keyExtractor={(item) => item.id.toString()}
@@ -82,4 +82,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: '#fff',
   },
+  completed: {
+    textDecorationLine: "line-through"
+  }
 });
