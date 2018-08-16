@@ -1,12 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, CheckBox } from 'react-native';
 
 export default class App extends React.Component {
   constructor(props){
     super(props)
     this.state = {
       todoInput: "",
-      toDos: [{id: 929829, item: "sleep"}, {id: 920, item: "eat"}]
+      checked: true,
+      toDos: [
+        {id: 929829, item: "sleep", completed: true},
+         {id: 920, item: "eat", completed: false}
+      ]
     }
   }
 
@@ -15,7 +19,8 @@ export default class App extends React.Component {
     const id = Math.floor((Math.random() * 2340) - 23)
     const newToDo = {
         id: id,
-        item: item
+        item: item,
+        completed: false
     }
     this.setState({toDos: [...this.state.toDos, newToDo]})
   }
@@ -26,9 +31,17 @@ export default class App extends React.Component {
       console.log(item)
       return toDo.id !== item.id
     });
-    console.log(removeToDo)
     this.setState({toDos: removeToDo})
-    
+  }
+
+  completedToDo = (item) => {
+   const changeCompleted = this.state.toDos.reduce((acc, currentToDo)=>{
+     if(currentToDo.id === item.id){
+       currentToDo.completed = !currentToDo.completed
+     }
+    return acc.concat(currentToDo)
+   }, []);
+   this.setState({toDos: changeCompleted})
   }
 
   render() {
@@ -48,6 +61,10 @@ export default class App extends React.Component {
             data={this.state.toDos}
             renderItem={({item}) => (
               <View style={{ width: 100, marginTop: 10, flexDirection: 'row', flexWrap: 'wrap'}}>
+                <CheckBox
+                  value={item.completed}
+                  onValueChange={()=> this.completedToDo(item)}
+                />
                 <Button title="X" onPress={()=>this.deleteToDo(item)}/>
                 <Text>{item.item}</Text>
               </View>
